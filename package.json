@@ -1,0 +1,19 @@
+{
+  "name": "textalyzer",
+  "version": "1.0.0",
+  "description": "Simple GUI tool to view large log files",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/austxcodemonkey/textalyzer.git"
+  },
+  "author": "Blake Bender",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/austxcodemonkey/textalyzer/issues"
+  },
+  "homepage": "https://github.com/austxcodemonkey/textalyzer#readme"
+}
