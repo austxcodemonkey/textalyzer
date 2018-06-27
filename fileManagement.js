@@ -4,7 +4,7 @@ var stream = require('stream');
 var linesIndex = { timestamps: [], fileNames: [], fileOffsets: [], lengths: []};
 
 function openFile () {
-
+    console.log("openFile");
     dialog.showOpenDialog({ filters: [
         { name: 'Log Files, Text Files', extensions: ['log', 'txt'] }
     ]},function (fileNames) {
@@ -53,6 +53,7 @@ function indexFile(fileName) {
       linesIndex.lengths.push(length);
       // Start display at beginning after loading new file
       displayLines(linesIndex.timestamps[0]);
+      populateTimeList();
     });
 }
 
@@ -89,6 +90,10 @@ function displayLines(timestamp) {
     index++;
   }
 
+  var withBreaks = buffer.toString().split("\n").join("<br />");
+
+  document.querySelector('#textGoesHere').innerHTML = withBreaks;
+
   console.log(buffer.toString());
 
   // while (we still need to read more lines)
@@ -100,4 +105,15 @@ function displayLines(timestamp) {
 
 }
 
+function populateTimeList()
+{
+  var options = '';
+
+  for(var i = 0; i < linesIndex.timestamps.length; i++)
+    options += '<option value="' + linesIndex.timestamps[i] +'">' + new Date(linesIndex.timestamps[i]).toString() + linesIndex.timestamps[i] + "</option>";
+
+    timestampComboBox.innerHTML = options;
+}
+
+var timestampComboBox = document.getElementById('timestamps');
 document.querySelector('#fileOpenButton').addEventListener('click', openFile);

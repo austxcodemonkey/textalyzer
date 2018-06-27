@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/austxcodemonkey/textalyzer/issues"
   },
-  "homepage": "https://github.com/austxcodemonkey/textalyzer#readme"
+  "homepage": "https://github.com/austxcodemonkey/textalyzer#readme",
+  "dependencies": {
+    "sqlite3": "^4.0.1"
+  }
 }
