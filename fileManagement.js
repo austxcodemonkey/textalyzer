@@ -1,4 +1,6 @@
 var fs = require('fs');
+var readline = require('readline');
+var stream = require('stream');
 
 function openFile () {
 
@@ -8,11 +10,24 @@ function openFile () {
         if (fileNames === undefined) return;
 
         var fileName = fileNames[0];
-      
-        fs.readFile(fileName, 'utf-8', function (err, data) {      
-          console.log("Selected filename " + fileName);
-        });
+
+        indexFile(fileName);
     }); 
   }
+
+function indexFile(fileName) {
+    var instream = fs.createReadStream(fileName);
+    var outstream = new stream;
+    var rl = readline.createInterface(instream, outstream);
+    
+    rl.on('line', function(line) {
+      // process line here
+      console.log("Found line: " + line);
+    });
+    
+    rl.on('close', function() {
+      console.log("Closed file");
+    });
+}
 
 document.querySelector('#fileOpenButton').addEventListener('click', openFile)
