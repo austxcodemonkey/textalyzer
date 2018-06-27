@@ -51,19 +51,52 @@ function indexFile(fileName) {
     rl.on('close', function() {
       console.log("Closed file");
       linesIndex.lengths.push(length);
+      // Start display at beginning after loading new file
+      displayLines(linesIndex.timestamps[0]);
     });
-
-    console.log("FOO");
 }
 
-function getIndexForPosition(position) {
+function getIndexForTimestamp(timestamp) {
+  for (var i = 0; i < linesIndex.timestamps.length; i++) {
+    if (linesIndex.timestamps[i] <= timestamp) {
+      return i;
+    }
+  }
+  return -1;
+}
 
+function linesToDisplay() {
+  return 200;
 }
 
 function displayLines(timestamp) {
   // scan index to position indicated
   var index = getIndexForTimestamp(timestamp);
   // read lines at index from indicated file
+  if (index != -1) {
+    console.log("Found lines to display at index " + index);
+  }
+
+  var totalLinesRead = 0;
+  var buffer = new Buffer(100000);
+  var offset = 0;
+
+  while(buffer.toString().split("\n").length < linesToDisplay())
+  {
+    var fd = fs.openSync(linesIndex.fileNames[index], "r");
+    offset += fs.readSync(fd, buffer, offset, linesIndex.fileOffsets[index], linesIndex.lengths[index]);
+
+    index++;
+  }
+
+  console.log(buffer.toString());
+
+  // while (we still need to read more lines)
+  // get text for entry
+  // count lines in text
+  // total lines read += lines in this entry
+  // index++
+  // elihw
 
 }
 
