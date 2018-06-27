@@ -2,7 +2,9 @@ var fs = require('fs');
 
 function openFile () {
 
-    dialog.showOpenDialog(function (fileNames) {
+    dialog.showOpenDialog({ filters: [
+        { name: 'Log Files, Text Files', extensions: ['log', 'txt'] }
+    ]},function (fileNames) {
         if (fileNames === undefined) return;
 
         var fileName = fileNames[0];
