@@ -28,7 +28,8 @@ function indexFile(fileName) {
       var result = line.match(regex);
       if (!(result === null)) {
         // process line here
-        console.log("Found timestamp: " + result[1]);
+        var date = new Date(result[1]);
+        console.log("Found timestamp: " + result[1] + ", time is " + date.getTime());
       }
       console.log("Position is " + position);
       position += line.length + 1;
