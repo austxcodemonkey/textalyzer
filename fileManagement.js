@@ -19,10 +19,19 @@ function indexFile(fileName) {
     var instream = fs.createReadStream(fileName);
     var outstream = new stream;
     var rl = readline.createInterface(instream, outstream);
+    var position = 0;
+
+    console.log("Scanning file " + fileName);
     
     rl.on('line', function(line) {
-      // process line here
-      console.log("Found line: " + line);
+      var regex = /\[[a-z]+ ([0-9\/ \.:]+ [A-Z]*)/;
+      var result = line.match(regex);
+      if (!(result === null)) {
+        // process line here
+        console.log("Found timestamp: " + result[1]);
+      }
+      console.log("Position is " + position);
+      position += line.length + 1;
     });
     
     rl.on('close', function() {
