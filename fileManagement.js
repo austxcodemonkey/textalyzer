@@ -105,15 +105,25 @@ function displayLines(timestamp) {
 
 }
 
+// https://stackoverflow.com/questions/2998784/how-to-output-integers-with-leading-zeros-in-javascript
+function pad(num, size) {
+  var s = "000000000" + num;
+  return s.substr(s.length-size);
+}
+
 function populateTimeList()
 {
   var options = '';
 
-  for(var i = 0; i < linesIndex.timestamps.length; i++)
-    options += '<option value="' + linesIndex.timestamps[i] +'">' + new Date(linesIndex.timestamps[i]).toString() + linesIndex.timestamps[i] + "</option>";
-
-    timestampComboBox.innerHTML = options;
+  for(var i = 0; i < linesIndex.timestamps.length; i++){
+    var thisOption = new Date(linesIndex.timestamps[i]);
+    var optionString = pad(thisOption.getHours(), 2) + ":" + pad(thisOption.getMinutes(), 2) +
+      ":" + pad(thisOption.getSeconds(), 2) + "." + pad(thisOption.getMilliseconds(), 3);
+    options += '<option value="' + linesIndex.timestamps[i] +'">' + optionString + "</option>";
+  }    
+  
+  timestampComboBox.innerHTML = options;
 }
 
-var timestampComboBox = document.getElementById('timestamps');
+var timestampComboBox = document.getElementById('timestampCombo');
 document.querySelector('#fileOpenButton').addEventListener('click', openFile);
