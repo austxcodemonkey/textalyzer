@@ -10,7 +10,8 @@
       Chrome <script>document.write(process.versions.chrome)</script>,
       and Electron <script>document.write(process.versions.electron)</script>.
       <button id="fileOpenButton">Open</button>
-      <select id="timestampCombo">
+      <button id="updateTime">Open</button>
+      <select id="timestampCombo" onchange="timeSelected()">
       </select>
       <p id="textGoesHere"></p>
     </body>

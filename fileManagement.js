@@ -59,8 +59,8 @@ function indexFile(fileName) {
 
 function getIndexForTimestamp(timestamp) {
   for (var i = 0; i < linesIndex.timestamps.length; i++) {
-    if (linesIndex.timestamps[i] <= timestamp) {
-      return i;
+    if (linesIndex.timestamps[i] > timestamp) {
+      return (i > 0) ? i - 1 : i;
     }
   }
   return -1;
@@ -81,14 +81,19 @@ function displayLines(timestamp) {
   var totalLinesRead = 0;
   var buffer = new Buffer(100000);
   var offset = 0;
+  var fd = fs.openSync(linesIndex.fileNames[index], "r");
 
-  while(buffer.toString().split("\n").length < linesToDisplay())
+  while(buffer.toString().split("\n").length < linesToDisplay() && index < linesIndex.timestamps.length)
   {
-    var fd = fs.openSync(linesIndex.fileNames[index], "r");
-    offset += fs.readSync(fd, buffer, offset, linesIndex.fileOffsets[index], linesIndex.lengths[index]);
+    console.log("Attempting to read " + linesIndex.lengths[index] + " bytes at offset " + linesIndex.fileOffsets[index]);
+    console.log("Line count is " + buffer.toString().split("\n").length);
+
+    offset += fs.readSync(fd, buffer, offset, linesIndex.lengths[index], linesIndex.fileOffsets[index]);
 
     index++;
   }
+
+  fs.closeSync(fd);
 
   var withBreaks = buffer.toString().split("\n").join("<br />");
 
@@ -123,7 +128,16 @@ function populateTimeList()
   }    
   
   timestampComboBox.innerHTML = options;
+  timestampComboBox.addEventListener('onchange', timeSelected);
+  console.log("onChange event handler set to " + timestampComboBox.onChange);
 }
 
-var timestampComboBox = document.getElementById('timestampCombo');
+function timeSelected() {
+  var timestamp = timestampComboBox.options[timestampComboBox.selectedIndex].value;
+  displayLines(timestamp);
+}
+
+var timestampComboBox = document.querySelector('#timestampCombo');
+
 document.querySelector('#fileOpenButton').addEventListener('click', openFile);
+document.querySelector('#updateTime').addEventListener('click', timeSelected);
