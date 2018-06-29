@@ -62,6 +62,9 @@ function getIndexForTimestamp(timestamp) {
     if (linesIndex.timestamps[i] > timestamp) {
       return (i > 0) ? i - 1 : i;
     }
+    else if (linesIndex.timestamps[i] == timestamp) {
+      return i;
+    }
   }
   return -1;
 }
@@ -98,16 +101,6 @@ function displayLines(timestamp) {
   var withBreaks = buffer.toString().split("\n").join("<br />");
 
   document.querySelector('#textGoesHere').innerHTML = withBreaks;
-
-  console.log(buffer.toString());
-
-  // while (we still need to read more lines)
-  // get text for entry
-  // count lines in text
-  // total lines read += lines in this entry
-  // index++
-  // elihw
-
 }
 
 // https://stackoverflow.com/questions/2998784/how-to-output-integers-with-leading-zeros-in-javascript
@@ -129,7 +122,6 @@ function populateTimeList()
   
   timestampComboBox.innerHTML = options;
   timestampComboBox.addEventListener('onchange', timeSelected);
-  console.log("onChange event handler set to " + timestampComboBox.onChange);
 }
 
 function timeSelected() {
